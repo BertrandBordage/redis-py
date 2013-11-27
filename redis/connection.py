@@ -32,7 +32,6 @@ SYM_EMPTY = b('')
 class PythonParser(object):
     "Plain Python parsing class"
     MAX_READ_LENGTH = 1000000
-    encoding = None
 
     EXCEPTION_CLASSES = {
         'ERR': ResponseError,
@@ -43,6 +42,7 @@ class PythonParser(object):
 
     def __init__(self):
         self._fp = None
+        self.encoding = None
 
     def __del__(self):
         try:
@@ -142,7 +142,7 @@ class PythonParser(object):
             length = int(response)
             if length == -1:
                 return None
-            response = [self.read_response() for i in xrange(length)]
+            response = [self.read_response() for _ in range(length)]
         if isinstance(response, bytes) and self.encoding:
             response = response.decode(self.encoding)
         return response

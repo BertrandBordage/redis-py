@@ -29,6 +29,9 @@ f = open(os.path.join(os.path.dirname(__file__), 'README.rst'))
 long_description = f.read()
 f.close()
 
+from Cython.Build import cythonize
+from Cython.Distutils import build_ext
+
 setup(
     name='redis',
     version=__version__,
@@ -42,8 +45,12 @@ setup(
     keywords=['Redis', 'key-value store'],
     license='MIT',
     packages=['redis'],
+    requires=['Cython'],
     tests_require=['pytest'],
-    cmdclass={'test': PyTest},
+    cmdclass={'build_ext': build_ext, 'test': PyTest},
+    ext_modules=cythonize([
+        'redis/*.py',
+    ]),
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Console',

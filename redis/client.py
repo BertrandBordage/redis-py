@@ -655,7 +655,9 @@ class StrictRedis(object):
     def exists(self, name):
         "Returns a boolean indicating whether key ``name`` exists"
         return self.execute_command('EXISTS', name)
-    __contains__ = exists
+
+    def __contains__(self, name):
+        return self.exists(name)
 
     def expire(self, name, time):
         """
